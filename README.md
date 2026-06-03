@@ -48,7 +48,7 @@ https://python.org/community
 ...
 ```
 
-##⚠️ Limitations
+## ⚠️ Limitations
 Does not execute JavaScript (links from dynamic content won't be found)
 
 Single-threaded (sequential crawling)
@@ -57,25 +57,27 @@ No robots.txt compliance
 
 HTTP only (no HTTPS certificate validation issues)
 
-##📝 Notes
+## 📝 Notes
 The crawler only follows internal links (same domain)
 
 Fragments/anchors (#section) are automatically removed
 
 Duplicate URLs are skipped automatically
 
-##🧪 Tested On
+## 🧪 Tested On
 Linux (Ubuntu, Debian)
 
 Windows 10/11
 
 macOS
 
-##🤝 Contributing
+## 🤝 Contributing
 Feel free to fork, modify, and submit pull requests!
 
-##👨‍💻 Author
+## 👨‍💻 Author
+
 Mina Safwat
 
-##⭐ Support
+## ⭐ Support
+
 If you find this tool useful, give it a star on GitHub!
