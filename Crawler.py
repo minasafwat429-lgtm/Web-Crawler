@@ -1,4 +1,3 @@
-import options
 import requests
 import re
 import urllib.parse
@@ -6,32 +5,41 @@ import optparse
 
 def get_arguments():
     parser = optparse.OptionParser()
-    parser.add_option("-u", "--url", dest="target_url", hrlp="Specify URL, -h for help")
-    parser, arguments = parser.parse_args()
+    parser.add_option("-u", "--url", dest="target_url", help="Specify URL, -h for help")
+    options, arguments = parser.parse_args()
 
     if not options.target_url:
         parser.error("[-] Please specify url, -h for help")
 
     return options.target_url
 
-target_url = "https://exmpile.com"
-target_link= []
-
 def get_links(url):
-    response = requests.get(target_url)
-    return re.findall('(?:href=")(.*?)"',response.connect.decode())
+    try:
+        response = requests.get(url, timeout=10)
+        return re.findall('(?:href=")(.*?)"', response.text)
+    except:
+        return []
 
-def crawl(url):
-    herf_links = get_links(url)
-    for link in herf_links:
-        link = urllib.parse.urljson(url, link)
+def crawl(url, base_url, visited=None):
+    if visited is None:
+        visited = set()
+    
+    if url in visited:
+        return visited
+    
+    visited.add(url)
+    print(url)
+    
+    for link in get_links(url):
+        full_link = urllib.parse.urljoin(url, link)
+        full_link = full_link.split("#")[0]
+        
+        if base_url in full_link and full_link not in visited:
+            crawl(full_link, base_url, visited)
+    
+    return visited
 
-        if "#" in link:
-            link =link.split("#")[0]
-
-        if url in  link not in target_link:
-            target_link.append(link)
-            print(link)
-            crawl(link)
-
-crawl(target_url)
+if __name__ == "__main__":
+    target_url = get_arguments()
+    print(f"[+] Starting crawl on: {target_url}\n")
+    crawl(target_url, target_url)
